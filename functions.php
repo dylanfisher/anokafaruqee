@@ -13,12 +13,12 @@ function sandbox_add_header_xua() {
 // BEGIN SANDBOX FUNCTIONS
 
 // Produces a list of pages in the header without whitespace
-function sandbox_globalnav() {
-	if ( $menu = str_replace( array( "\r", "\n", "\t" ), '', wp_list_pages('title_li=&sort_column=menu_order&echo=0&exclude=86') ) )
-		$menu = '<ul>' . $menu . '</ul>';
-	$menu = '<div id="menu">' . $menu . "</div>\n";
-	echo apply_filters( 'globalnav_menu', $menu ); // Filter to override default globalnav: globalnav_menu
-}
+// function sandbox_globalnav() {
+// 	if ( $menu = str_replace( array( "\r", "\n", "\t" ), '', wp_list_pages('title_li=&sort_column=menu_order&echo=0&exclude=86') ) )
+// 		$menu = '<ul>' . $menu . '</ul>';
+// 	$menu = '<div id="menu">' . $menu . "</div>\n";
+// 	echo apply_filters( 'globalnav_menu', $menu ); // Filter to override default globalnav: globalnav_menu
+// }
 
 // Generates semantic classes for BODY element
 function sandbox_body_class( $print = true ) {
@@ -509,7 +509,8 @@ remove_action('wp_head', 'adjacent_posts_rel_link', 10, 0);
 show_admin_bar( false );
 
 // Adds custom menu support
-register_nav_menu( 'primary', 'Primary Menu' );
+// register_nav_menu( 'main', 'Main' );
+add_theme_support('menus');
 
 /* Function to create slug out of text */
  function slugify( $text )
@@ -571,12 +572,29 @@ add_filter('comment_text', 'autoblank');
 /* Check for custom Single Post templates by category. Format for template name is single-categoryID.php */
 add_filter('single_template', create_function('$t', 'foreach( (array) get_the_category() as $cat ) { if ( file_exists(TEMPLATEPATH . "/single-{$cat->term_id}.php") ) return TEMPLATEPATH . "/single-{$cat->term_id}.php"; } return $t;' ));
 
+function current_type_nav_class($classes, $item) {
+    $post_type = get_query_var('post_type');
+    $current_category = get_the_category();
+    $current_category_name = null;
+
+    if ( $current_category ) $current_category = $current_category[0];
+    if ( $current_category ) $current_category_name = $current_category->name;
+    if ( $current_category_name ) $current_category_name = slugify( $current_category_name );
+
+    if ( $current_category_name && ( slugify( $item->title ) == $current_category_name ) ) {
+	    	array_push($classes, 'current_page_item');
+    }
+
+    return $classes;
+}
+add_filter('nav_menu_css_class', 'current_type_nav_class', 10, 2 );
+
 // Front end only, don't hack on the settings page
-if ( ! is_admin() ) {
+// if ( ! is_admin() ) {
     // Hook in early to modify the menu
     // This is before the CSS "selected" classes are calculated
-    add_filter( 'wp_get_nav_menu_items', 'replace_placeholder_nav_menu_item_with_latest_post', 10, 3 );
-}
+    // add_filter( 'wp_get_nav_menu_items', 'replace_placeholder_nav_menu_item_with_latest_post', 10, 3 );
+// }
 
 // Custom Wordpress UI options (uncomment to enable)
 // CUSTOM ADMIN LOGIN HEADER LOGO

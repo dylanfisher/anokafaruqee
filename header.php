@@ -15,7 +15,7 @@
 	<script>document.cookie='resolution='+Math.max(screen.width,screen.height)+("devicePixelRatio" in window ? ","+devicePixelRatio : ",1")+'; path=/';</script>
 	<script src="<?php echo get_bloginfo('template_url'); ?>/js/modernizr.custom.07657.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="<?php echo get_bloginfo('template_url'); ?>/js/jquery-1.9.1.min.js"><\/script>')</script>	
+	<script>window.jQuery || document.write('<script src="<?php echo get_bloginfo('template_url'); ?>/js/jquery-1.9.1.min.js"><\/script>')</script>
 	<script src="<?php echo get_bloginfo('template_url'); ?>/js/queryloader2.js"></script>
 <?php wp_head() // For plugins ?>
 </head>
@@ -25,18 +25,10 @@
 	<![endif]-->
 	<div class="wrapper">
 		<header>
-			<h1 class="site-title"><span><a href="<?php bloginfo('home') ?>/" rel="home"><img src="http://anokafaruqee.com/wp-content/uploads/af_logotype_v2.png" alt="Anoka Faruqee" /></a></span></h1>
+			<h1 class="site-title"><span><a href="<?php bloginfo('home') ?>/" rel="home"><img src="<?php echo get_site_url(); ?>/wp-content/uploads/af_logotype_v2.png" alt="Anoka Faruqee" /></a></span></h1>
 			<nav class="main-nav clearfix">
-				<div id="menu">
-					<ul>
-						<li class="page_item page-item-33 <?php if(is_page(33) || is_page(86) || has_category(5)){echo(current_page_item);} ?>"><a href="http://anokafaruqee.com/painting/">Painting</a></li>
-						<li class="page_item page-item-47 <?php if(is_page(47)){echo(current_page_item);} ?>"><a href="http://anokafaruqee.com/books/">Books</a></li>
-						<li class="page_item page-item-35 <?php if(is_page(35) || has_category(6)){echo(current_page_item);} ?>"><a href="http://anokafaruqee.com/writing/">Writing</a></li>
-						<li class="page_item page-item-36 <?php if(is_page(36) || has_category(4)){echo(current_page_item);} ?>"><a href="http://anokafaruqee.com/press/">Press</a></li>
-						<li class="page_item page-item-37 information <?php if(is_page(37) || has_category(3)){echo(current_page_item);} ?>"><a href="http://anokafaruqee.com/information/"><span class="trim">information</span><span class="trimmed">info</span></a></li>
-					</ul>
-				</div>			
-			
+				<?php wp_nav_menu(); ?>
+
 <?php // Sub menu for Paintings pages excluding Diptychs/Triptychs
 if ( is_page( 33 ) || is_page( 86 ) || has_category( 5 ) && ! has_category( '11' ) ) { ?>
 					<ul class="sub-menu">
